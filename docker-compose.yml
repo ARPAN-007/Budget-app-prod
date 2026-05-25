@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+
+  auth-service:
+    build:
+      context: ./backend/auth-service
+    ports:
+      - "8001:8001"
+
+  expense-service:
+    build:
+      context: ./backend/expense-service
+    ports:
+      - "8002:8002"
+
+  ai-service:
+    build:
+      context: ./backend/ai-service
+    ports:
+      - "8003:8003"

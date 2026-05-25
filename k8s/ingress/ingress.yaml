@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: finops-ingress
+
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+spec:
+
+  ingressClassName: nginx
+
+  rules:
+
+    - host: finops.local
+
+      http:
+
+        paths:
+
+          - path: /auth(/|$)(.*)
+            pathType: ImplementationSpecific
+
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8001
+
+          - path: /expense(/|$)(.*)
+            pathType: ImplementationSpecific
+
+            backend:
+              service:
+                name: expense-service
+                port:
+                  number: 8002
+
+          - path: /ai(/|$)(.*)
+            pathType: ImplementationSpecific
+
+            backend:
+              service:
+                name: ai-service
+                port:
+                  number: 8003
