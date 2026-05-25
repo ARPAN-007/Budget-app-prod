@@ -22,9 +22,9 @@ spec:
       containers:
         - name: ai-service
 
-          image: finops-ai:v2
+          image: arpanmanna/finops-ai:v1
 
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8003

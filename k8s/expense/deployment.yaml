@@ -22,9 +22,9 @@ spec:
       containers:
         - name: expense-service
 
-          image: finops-expense
+          image: arpanmanna/finops-expense:v1
 
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8002

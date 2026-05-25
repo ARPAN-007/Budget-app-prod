@@ -22,9 +22,9 @@ spec:
       containers:
         - name: auth-service
 
-          image: finops-auth:v4
+          image: arpanmanna/finops-auth:v1
 
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8001
