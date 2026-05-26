@@ -1,0 +1,14 @@
+resources:
+  - auth/deployment.yaml
+  - auth/service.yaml
+
+  - expense/deployment.yaml
+  - expense/service.yaml
+
+  - ai/deployment.yaml
+  - ai/service.yaml
+
+  - postgres/deployment.yaml
+  - postgres/service.yaml
+
+  - ingress/ingress.yaml
