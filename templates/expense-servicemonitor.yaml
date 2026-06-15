@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+
+metadata:
+  name: {{ .Values.expense.name }}-monitor
+
+  labels:
+    release: monitoring
+
+spec:
+
+  selector:
+    matchLabels:
+      app: {{ .Values.expense.name }}
+
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

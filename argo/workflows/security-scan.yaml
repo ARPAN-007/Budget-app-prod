@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+
+metadata:
+  name: trivy-scan
+
+spec:
+  schedule: "0 1 * * *"
+
+  workflowSpec:
+
+    entrypoint: scan
+
+    templates:
+
+    - name: scan
+
+      container:
+
+        image: aquasec/trivy
+
+        command: [sh, -c]
+
+        args:
+        - |
+          trivy image arpanmanna/finops-auth
+          trivy image arpanmanna/finops-expense
+          trivy image arpanmanna/finops-ai

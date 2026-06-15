@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Values.ai.name }}
+
+spec:
+
+  replicas: {{ .Values.ai.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.ai.name }}
+
+  template:
+
+    metadata:
+      labels:
+        app: {{ .Values.ai.name }}
+
+    spec:
+
+      containers:
+
+        - name: {{ .Values.ai.name }}
+
+          image: "{{ .Values.ai.image.repository }}:{{ .Values.ai.image.tag }}"
+
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.ai.containerPort }}
+              protocol: TCP
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "{{ .Values.kafka.bootstrapServers }}"

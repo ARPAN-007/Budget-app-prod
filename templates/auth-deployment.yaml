@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: {{ .Values.auth.name }}
+
+spec:
+
+  replicas: {{ .Values.auth.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Values.auth.name }}
+
+  template:
+
+    metadata:
+      labels:
+        app: {{ .Values.auth.name }}
+
+    spec:
+
+      containers:
+
+        - name: {{ .Values.auth.name }}
+
+          image: "{{ .Values.auth.image.repository }}:{{ .Values.auth.image.tag }}"
+
+          imagePullPolicy: Always
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.auth.containerPort }}
+              protocol: TCP
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "{{ .Values.kafka.bootstrapServers }}"

@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+
+metadata:
+  name: postgres-backup
+
+spec:
+  schedule: "0 */6 * * *"
+
+  workflowSpec:
+
+    entrypoint: backup
+
+    templates:
+
+    - name: backup
+
+      container:
+
+        image: postgres:16
+
+        command: [sh, -c]
+
+        args:
+        - |
+          pg_dump \
+          -h postgres \
+          -U postgres \
+          budgetdb > /backup/backup.sql

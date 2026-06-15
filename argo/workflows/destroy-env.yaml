@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+
+metadata:
+  generateName: finops-destroy-
+
+spec:
+
+  entrypoint: destroy-env
+
+  templates:
+
+  - name: destroy-env
+
+    container:
+
+      image: hashicorp/terraform:1.8
+
+      command: [sh, -c]
+
+      args:
+      - |
+        apk add git
+
+        git clone https://github.com/ARPAN-007/Budget-app-prod.git
+
+        cd \finops-chart\infra\terraform
+
+        terraform init
+
+        terraform destroy -auto-approve

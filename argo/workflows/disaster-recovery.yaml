@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+
+metadata:
+  generateName: disaster-recovery-
+
+spec:
+  entrypoint: restore
+
+  templates:
+
+  - name: restore
+
+    container:
+
+      image: postgres:16
+
+      command: [sh, -c]
+
+      args:
+      - |
+        psql \
+        -h postgres \
+        -U postgres \
+        budgetdb < /backup/backup.sql

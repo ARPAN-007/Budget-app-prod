@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+
+metadata:
+  generateName: finops-create-
+
+spec:
+
+  entrypoint: create-env
+
+  templates:
+
+  - name: create-env
+
+    container:
+
+      image: hashicorp/terraform:1.8
+
+      command: [sh, -c]
+
+      args:
+      - |
+        apk add git
+
+        git clone https://github.com/ARPAN-007/Budget-app-prod.git
+
+        cd \finops-chart\infra\terraform
+
+        terraform init
+
+        terraform apply -auto-approve

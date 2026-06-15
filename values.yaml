@@ -1,0 +1,41 @@
+auth:
+  name: auth-service
+  image:
+    repository: arpanmanna/finops-auth
+    tag: 595a401
+  containerPort: 8001
+  service:
+    port: 8001
+ai:
+  name: ai-service
+  image:
+    repository: arpanmanna/finops-ai
+    tag: 595a401
+  containerPort: 8003
+  service:
+    port: 8003
+expense:
+  name: expense-service
+  image:
+    repository: arpanmanna/finops-expense
+    tag: 595a401
+  containerPort: 8002
+  service:
+    port: 8002
+
+postgres:
+
+  name: postgres
+
+  image: postgres:15
+
+  port: 5432
+
+  username: postgres
+  password: postgres
+  database: finops
+
+  storage: 1Gi
+
+kafka:
+  bootstrapServers: kafka.kafka.svc.cluster.local:9092

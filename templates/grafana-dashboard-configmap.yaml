@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: grafana-dashboards
+
+  labels:
+    grafana_dashboard: "1"
+
+data:
+  k8s-overview.json: |-
+{{ (.Files.Get "dashboards/k8s-overview.json") | nindent 4 }}
+
+  finops-overview.json: |-
+{{ (.Files.Get "dashboards/finops-overview.json") | nindent 4 }}

@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "title": "CPU Usage by Namespace",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total[5m])) by (namespace)"
+        }
+      ]
+    },
+    {
+      "title": "Memory Usage by Namespace",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(container_memory_working_set_bytes) by (namespace)"
+        }
+      ]
+    },
+    {
+      "title": "Pod Restarts",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(kube_pod_container_status_restarts_total)"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Kubernetes Overview",
+  "version": 1
+}
