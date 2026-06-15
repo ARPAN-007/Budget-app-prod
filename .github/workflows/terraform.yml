@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - '/infra/terraform/**'
+      - 'infra/terraform/**'
 
 jobs:
 
@@ -15,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: finops-chart/infra/terraform
+        working-directory: infra/terraform
 
     steps:
 
