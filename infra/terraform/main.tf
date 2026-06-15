@@ -4,7 +4,6 @@ module "namespace" {
 
   namespace = var.namespace
 }
-
 module "postgres" {
 
   source = "./modules/postgres"
