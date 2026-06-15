@@ -1,6 +1,7 @@
 variable "environment" {}
-variable "namespace" {}
-
+variable "namespace" {
+  default = true
+}
 variable "postgres_username" {}
 variable "postgres_password" {
   sensitive = true

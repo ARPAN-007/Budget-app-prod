@@ -2,7 +2,7 @@ module "namespace" {
 
   source = "./modules/namespace"
 
-  namespace = var.namespace
+  name = var.namespace
 }
 module "postgres" {
 
