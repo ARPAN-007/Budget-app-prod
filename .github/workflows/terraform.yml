@@ -6,7 +6,7 @@ on:
       - master
 
     paths:
-      - 'finops-chart/infra/terraform/**'
+      - '/infra/terraform/**'
 
 jobs:
 

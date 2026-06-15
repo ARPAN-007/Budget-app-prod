@@ -32,16 +32,16 @@ jobs:
         with:
           filters: |
             ai:
-              - 'finops-chart/backend/ai-service/**'
+              - '/backend/ai-service/**'
 
             auth:
-              - 'finops-chart/backend/auth-service/**'
+              - '/backend/auth-service/**'
 
             expense:
-              - 'finops-chart/backend/expense-service/**'
+              - '/backend/expense-service/**'
 
             helm:
-              - 'finops-chart/**'
+              - 'templates/**'
               - 'k8s/**'
 
 #################################################
