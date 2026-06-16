@@ -27,3 +27,5 @@ jobs:
       - run: terraform fmt -check
 
       - run: terraform validate
+
+      - run: terraform plan -out=tfplan
