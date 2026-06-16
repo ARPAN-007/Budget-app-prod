@@ -32,3 +32,4 @@ jobs:
       - run: terraform plan -out=tfplan
         env:
           TF_VAR_postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
+          TF_VAR_postgres_username: ${{ secrets.POSTGRES_USERNAME }}
