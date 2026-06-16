@@ -1,4 +1,7 @@
-variable "environment" {}
+variable "environment" {
+  type    = string
+  default = "dev"
+}
 variable "namespace" {
   default = true
 }
