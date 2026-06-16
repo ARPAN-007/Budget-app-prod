@@ -7,6 +7,5 @@ variable "username" {
 }
 
 variable "password" {
-  type      = string
-  sensitive = true
+  type = string
 }
