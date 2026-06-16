@@ -8,11 +8,15 @@ terraform {
 
     kubectl = {
       source  = "gavinbunney/kubectl"
-      version = "~> 1.14"
+      version = "~> 1.14.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.13"
     }
   }
 }
 
-provider "kubernetes" {
+provider "kubectl" {
   config_path = "~/.kube/config"
 }
