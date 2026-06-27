@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: sre-dashboard
+
+  labels:
+    grafana_dashboard: "1"
+
+data:
+  sre-dashboard.json: |
+{{ .Files.Get "monitoring/dashboards/sre-dashboard.json" | indent 4 }}

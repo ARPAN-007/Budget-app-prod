@@ -1,0 +1,54 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+
+metadata:
+  name: finops-alerts
+  namespace: monitoring
+
+spec:
+  groups:
+
+  - name: error-budget
+
+    rules:
+
+    - alert: ErrorBudgetBurnRateHigh
+
+      expr: |
+        (
+          sum(rate(http_requests_total{status=~"5.."}[1h]))
+          /
+          sum(rate(http_requests_total[1h]))
+        ) / 0.001 > 10
+
+      for: 10m
+
+      labels:
+        severity: critical
+
+      annotations:
+        summary: Error budget burn rate high
+
+    - alert: ExpenseServiceDown
+
+      expr: up{job="expense-service"} == 0
+
+      for: 2m
+
+      labels:
+        severity: critical
+
+      annotations:
+        summary: Expense Service Down
+
+    - alert: PostgresDown
+
+      expr: pg_up == 0
+
+      for: 2m
+
+      labels:
+        severity: critical
+
+      annotations:
+        summary: PostgreSQL Down

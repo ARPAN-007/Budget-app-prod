@@ -1,0 +1,47 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "title": "Availability %",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "100 * (sum(rate(http_requests_total{status!~\"5..\"}[5m])) / sum(rate(http_requests_total[5m])))"
+        }
+      ]
+    },
+    {
+      "title": "Error Rate %",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "100 * (sum(rate(http_requests_total{status=~\"5..\"}[5m])) / sum(rate(http_requests_total[5m])))"
+        }
+      ]
+    },
+    {
+      "title": "Request Throughput",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total[5m]))"
+        }
+      ]
+    },
+    {
+      "title": "Burn Rate",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "(sum(rate(http_requests_total{status=~\"5..\"}[1h])) / sum(rate(http_requests_total[1h]))) / 0.001"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "title": "FinOps SRE Dashboard",
+  "version": 1
+}

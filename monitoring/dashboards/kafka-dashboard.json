@@ -1,0 +1,24 @@
+{
+  "panels": [
+    {
+      "title": "Consumer Lag",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "kafka_consumergroup_lag"
+        }
+      ]
+    },
+    {
+      "title": "Messages In/sec",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(kafka_server_brokertopicmetrics_messagesin_total[5m])"
+        }
+      ]
+    }
+  ],
+  "title": "Kafka Dashboard",
+  "schemaVersion": 38
+}

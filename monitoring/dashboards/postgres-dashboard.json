@@ -1,0 +1,33 @@
+{
+  "panels": [
+    {
+      "title": "Database Up",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "pg_up"
+        }
+      ]
+    },
+    {
+      "title": "Connections",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "pg_stat_database_numbackends"
+        }
+      ]
+    },
+    {
+      "title": "Transactions/sec",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(pg_stat_database_xact_commit[5m])"
+        }
+      ]
+    }
+  ],
+  "title": "PostgreSQL Dashboard",
+  "schemaVersion": 38
+}

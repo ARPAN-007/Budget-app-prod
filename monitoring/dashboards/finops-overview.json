@@ -1,0 +1,490 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "schemaVersion": 39,
+  "version": 1,
+  "title": "FinOps Platform Dashboard",
+  "timezone": "browser",
+  "refresh": "30s",
+
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "Prometheus"
+        },
+        "refresh": 1,
+        "query": "label_values(kube_pod_info, namespace)",
+        "includeAll": true,
+        "multi": true
+      }
+    ]
+  },
+
+  "panels": [
+
+    {
+      "id": 1,
+      "title": "Auth Requests/sec",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{job=~\".*auth.*\"}[5m]))"
+        }
+      ]
+    },
+
+    {
+      "id": 2,
+      "title": "Expense Requests/sec",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{job=~\".*expense.*\"}[5m]))"
+        }
+      ]
+    },
+
+    {
+      "id": 3,
+      "title": "AI Requests/sec",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{job=~\".*ai.*\"}[5m]))"
+        }
+      ]
+    },
+
+    {
+      "id": 4,
+      "title": "CPU Usage By Namespace",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 4
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\"}[5m])) by (namespace)"
+        }
+      ]
+    },
+
+    {
+      "id": 5,
+      "title": "Memory Usage By Namespace",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "targets": [
+        {
+          "expr": "sum(container_memory_working_set_bytes{namespace=~\"$namespace\"}) by (namespace)"
+        }
+      ]
+    },
+
+    {
+      "id": 6,
+      "title": "Pods By Namespace",
+      "type": "piechart",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "targets": [
+        {
+          "expr": "count(kube_pod_info{namespace=~\"$namespace\"}) by (namespace)"
+        }
+      ]
+    },
+
+    {
+      "id": 7,
+      "title": "Pod Restart Count",
+      "type": "bargauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_container_status_restarts_total{namespace=~\"$namespace\"}) by (pod)"
+        }
+      ]
+    },
+
+    {
+      "id": 8,
+      "title": "Top CPU Pods",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "targets": [
+        {
+          "expr": "topk(10,sum(rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\"}[5m])) by (pod))"
+        }
+      ]
+    },
+
+    {
+      "id": 9,
+      "title": "Top Memory Pods",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "targets": [
+        {
+          "expr": "topk(10,sum(container_memory_working_set_bytes{namespace=~\"$namespace\"}) by (pod))"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Postgres Connections",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "pg_stat_database_numbackends"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Transactions Per Second",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "rate(pg_stat_database_xact_commit[5m])"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Database Size",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "pg_database_size_bytes"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Cache Hit %",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "(rate(pg_stat_database_blks_hit[5m])/(rate(pg_stat_database_blks_hit[5m])+rate(pg_stat_database_blks_read[5m])))*100"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "AI P95 Response Time",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95,sum(rate(http_request_duration_seconds_bucket{job=~\".*ai.*\"}[5m])) by (le))"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Auth Error Rate %",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "(sum(rate(http_requests_total{job=~\".*auth.*\",status=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=~\".*auth.*\"}[5m]))) * 100"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Expense Error Rate %",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "(sum(rate(http_requests_total{job=~\".*expense.*\",status=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=~\".*expense.*\"}[5m]))) * 100"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "AI Error Rate %",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "(sum(rate(http_requests_total{job=~\".*ai.*\",status=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=~\".*ai.*\"}[5m]))) * 100"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Availability %",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "targets": [
+        {
+          "expr": "100 - ((sum(rate(http_requests_total{status=~\"5..\"}[30d])) / sum(rate(http_requests_total[30d]))) * 100)"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Error Budget Remaining %",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "targets": [
+        {
+          "expr": "((0.1 - ((sum(rate(http_requests_total{status=~\"5..\"}[30d])) / sum(rate(http_requests_total[30d]))) * 100))/0.1)*100"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Kafka Consumer Lag",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "targets": [
+        {
+          "expr": "kafka_consumergroup_lag"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Kafka Messages In/sec",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "targets": [
+        {
+          "expr": "rate(kafka_server_brokertopicmetrics_messagesin_total[5m])"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Kafka Bytes In/sec",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 48
+      },
+      "targets": [
+        {
+          "expr": "rate(kafka_server_brokertopicmetrics_bytesin_total[5m])"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "ArgoCD Applications",
+      "type": "stat",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "count(argocd_app_info)"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Out Of Sync Applications",
+      "type": "stat",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "count(argocd_app_info{sync_status!=\"Synced\"})"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Namespace CPU Requests",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 64
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"$namespace\"}) by (namespace)"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "title": "Namespace Memory Requests",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 64
+      },
+      "targets": [
+        {
+          "expr": "sum(kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"$namespace\"}) by (namespace)"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "title": "Top 10 CPU Consumers",
+      "type": "bargauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 72
+      },
+      "targets": [
+        {
+          "expr": "topk(10,sum(rate(container_cpu_usage_seconds_total[5m])) by (pod))"
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "title": "Top 10 Memory Consumers",
+      "type": "bargauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 72
+      },
+      "targets": [
+        {
+          "expr": "topk(10,sum(container_memory_working_set_bytes) by (pod))"
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "title": "Cluster CPU Utilization %",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 80
+      },
+      "targets": [
+        {
+          "expr": "100 - avg(irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "title": "Cluster Memory Utilization %",
+      "type": "gauge",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 80
+      },
+      "targets": [
+        {
+          "expr": "(1 - (sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes))) * 100"
+        }
+      ]
+    }
+  ]
+}
